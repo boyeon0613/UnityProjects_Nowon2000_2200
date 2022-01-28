@@ -14,12 +14,19 @@ public class CameraHandler : MonoBehaviour
     // 1. 경주말들의 등수를 실시간으로 체크한다.
     // 2. 1등 말의 위치를 가져온다.
     // 3. 카메라의 위치를 1등 말의 위치에다가 특정 거리만큼 떨어뜨린다.
-
+    #region 싱글톤
+    static public CameraHandler instance;
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+    }
+    #endregion
     Transform tr;
     Transform leader;
     int targetindex;
     Transform target;
     public Vector3 offset;
+    [SerializeField] private Transform platformCamPoint;
     private void Start()
     {
         tr=this.gameObject.GetComponent<Transform>();
@@ -49,5 +56,10 @@ public class CameraHandler : MonoBehaviour
     {
         target = RacingPlay.instance.Get1GradePlayer();
     }           
-     
+     public void MovetoPlatform()
+    {
+        tr.position = platformCamPoint.position;
+        tr.rotation = platformCamPoint.rotation;
+    }
+
 }

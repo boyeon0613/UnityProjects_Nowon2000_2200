@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RacingPlay : MonoBehaviour
 {
@@ -16,11 +17,12 @@ public class RacingPlay : MonoBehaviour
     private List<PlayerMove> list_PlayerMove=new List<PlayerMove>();
     private List<Transform> list_FinishedPlayer=new List<Transform>();
     [SerializeField] List<Transform> list_WinPlatform=new List<Transform>();
+    [SerializeField] List<Vector3> offset = new List<Vector3>();
+
     private int totalPlayerNum;
     private int grade;
     [SerializeField] Transform goal;
-    public Vector3 offset;
-
+    [SerializeField] Text grade1playerNameText;
     public void Register(PlayerMove playerMove)
     {
         list_PlayerMove.Add(playerMove);
@@ -64,7 +66,11 @@ public class RacingPlay : MonoBehaviour
             // 1, 2, 3 등은 단상에 위치시키고, 카메라는 단상을 찍도록 한다.
             for (int i = 0; i < list_WinPlatform.Count; i++)
             {
-                list_FinishedPlayer[i].position = list_WinPlatform[i].position + offset;
+                list_FinishedPlayer[i].position = list_WinPlatform[i].position + offset[i];
+                CameraHandler.instance.MovetoPlatform();
+                //1등 친구 이름 텍스트 업데이트
+                grade1playerNameText.text = list_FinishedPlayer[0].name;
+                grade1playerNameText.gameObject.SetActive(true);
             }
         }
     }
